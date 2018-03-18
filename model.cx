@@ -2,9 +2,6 @@ in package /corto/rest/login
 
 use corto/httprouter
 
-x/token path: "[-a-zA-Z_0-9\\. \\/]*"
-x/token file: "[-a-zA-Z_0-9\\.]*"
-
 httprouter/Router service :/
   GET login: "/login"
   GET logout: "/logout"
