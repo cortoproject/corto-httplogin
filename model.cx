@@ -3,5 +3,5 @@ in package /corto/rest/login
 use corto/httprouter
 
 httprouter/Router service :/
-  GET login: "/login"
-  GET logout: "/logout"
+  POST login: "/login"
+  POST logout: "/logout"
