@@ -1,11 +1,11 @@
 /* This is a managed file. Do not delete this comment. */
 
-#include <corto/rest/login/login.h>
+#include <corto/httplogin/httplogin.h>
 
-corto_string login_service_login(
-    login_service this,
+corto_string httplogin_service_login(
+    httplogin_service this,
     httpserver_HTTP_Request *request,
-    login_login *data)
+    httplogin_login *data)
 {
     const char *username = httpserver_HTTP_Request_getVar(request, "username");
     const char *password = httpserver_HTTP_Request_getVar(request, "password");
@@ -26,10 +26,10 @@ corto_string login_service_login(
     return "Success";
 }
 
-corto_string login_service_logout(
-    login_service this,
+corto_string httplogin_service_logout(
+    httplogin_service this,
     httpserver_HTTP_Request *request,
-    login_logout *data)
+    httplogin_logout *data)
 {
     const char *session_id = httpserver_HTTP_Request_getVar(request, "session_id");
     if (!session_id) {

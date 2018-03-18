@@ -1,6 +1,6 @@
 /* This is a managed file. Do not delete this comment. */
 
-#include <corto/rest/login/login.h>
+#include <corto/httplogin/httplogin.h>
 
 
 

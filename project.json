@@ -1,5 +1,5 @@
 {
-    "id": "corto/rest/login",
+    "id": "corto/httplogin",
     "type": "package",
     "value": {
         "description": "Create and delete sessions over HTTP",

@@ -1,4 +1,4 @@
-in package /corto/rest/login
+in package /corto/httplogin
 
 use corto/httprouter
 
