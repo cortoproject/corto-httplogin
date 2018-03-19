@@ -9,12 +9,8 @@
 #include <corto/corto.h>
 #include <corto/httplogin/_project.h>
 #include <corto/httprouter/c/c.h>
-#include <corto/httpserver/c/c.h>
-#include <corto/x/c/c.h>
 #include <corto/c/c.h>
 #include <corto/httprouter/httprouter.h>
-#include <corto/httpserver/httpserver.h>
-#include <corto/x/x.h>
 
 /* $header() */
 /* Definitions that are required by package headers (native types) go here. */

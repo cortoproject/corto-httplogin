@@ -11,19 +11,20 @@ corto_string httplogin_service_login(
     const char *password = httpserver_HTTP_Request_getVar(request, "password");
 
     if (!username) {
-        httpserver_HTTP_Request_badRequest(request, "no username provided");
+        httpserver_HTTP_Request_badRequest(request, "No username provided");
         return NULL;
     }
 
     const char *session_id = corto_login(username, password);
     if (!session_id) {
-        httpserver_HTTP_Request_badRequest(request, "invalid login");
+        httpserver_HTTP_Request_badRequest(request, "Invalid login");
+        return NULL;
     }
 
     /* Set session-id in cookie on the client */
     httpserver_HTTP_Request_setCookie(request, "session-id", session_id);
 
-    return "Success";
+    return corto_strdup("Login success");
 }
 
 corto_string httplogin_service_logout(
@@ -40,5 +41,5 @@ corto_string httplogin_service_logout(
 
     corto_logout(session_id);
 
-    return "Success";
+    return corto_strdup("Logout success");
 }

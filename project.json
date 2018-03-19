@@ -6,6 +6,6 @@
         "author": "Sander Mertens",
         "version": "1.0.0",
         "language": "c",
-        "use": ["corto/x", "corto/httpserver", "corto/httprouter"]
+        "use": ["corto/httprouter"]
     }
 }

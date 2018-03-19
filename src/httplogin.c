@@ -2,11 +2,9 @@
 
 #include <corto/httplogin/httplogin.h>
 
-
-
 int cortomain(int argc, char *argv[]) {
 
     /* Insert implementation */
-    
+
     return 0;
 }
