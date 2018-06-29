@@ -2,7 +2,7 @@
     "id": "corto/httplogin",
     "type": "package",
     "value": {
-        "description": "Create and delete sessions over HTTP",
+        "description": "Login and logout to corto sessions over HTTP",
         "author": "Sander Mertens",
         "version": "1.0.0",
         "language": "c",

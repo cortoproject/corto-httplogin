@@ -22,7 +22,7 @@ error:
 
 corto_string httplogin_service_login(
     httplogin_service this,
-    httpserver_HTTP_Request *request,
+    corto_httpserver_HTTP_Request *request,
     httplogin_login *data)
 {
     const char *username = httpserver_HTTP_Request_getVar(request, "username");
@@ -47,7 +47,7 @@ corto_string httplogin_service_login(
 
 corto_string httplogin_service_logout(
     httplogin_service this,
-    httpserver_HTTP_Request *request,
+    corto_httpserver_HTTP_Request *request,
     httplogin_logout *data)
 {
     const char *session_id = httpserver_HTTP_Request_getVar(
@@ -72,8 +72,8 @@ typedef struct httplogin_session_ctx {
 
 uintptr_t httplogin_service_on_pre_request(
     httplogin_service this,
-    httpserver_HTTP_Connection c,
-    httpserver_HTTP_Request *r)
+    corto_httpserver_HTTP_Connection c,
+    corto_httpserver_HTTP_Request *r)
 {
     const char *session_id = httpserver_HTTP_Request_getVar(
         r, "session_id");
@@ -87,7 +87,7 @@ uintptr_t httplogin_service_on_pre_request(
     if ((!session_id || !session_id[0]) && this->enable_guest) {
         session_id = corto_login("guest", "");
         if (!session_id) {
-            corto_error("login-pre-request: guest account not found");
+            corto_error("login-pre-request: failed to login guest account");
         } else {
             corto_ok("login-pre-request: logged in as guest");
             is_guest = true;
@@ -108,8 +108,8 @@ uintptr_t httplogin_service_on_pre_request(
 
 void httplogin_service_on_post_request(
     httplogin_service this,
-    httpserver_HTTP_Connection c,
-    httpserver_HTTP_Request *r,
+    corto_httpserver_HTTP_Connection c,
+    corto_httpserver_HTTP_Request *r,
     uintptr_t ctx)
 {
     httplogin_session_ctx *data = (httplogin_session_ctx*)ctx;
