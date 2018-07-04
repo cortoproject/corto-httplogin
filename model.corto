@@ -1,0 +1,18 @@
+in corto.httplogin
+
+use corto.httprouter
+use corto.httpserver
+
+httprouter/Router service {
+    member enable_guest: bool
+
+    construct() int16
+
+override
+    on_pre_request(HTTP/Connection c, HTTP/Request r) word
+    on_post_request(HTTP/Connection c, HTTP/Request r, word ctx) void
+
+POST
+    login: "/login"
+    logout: "/logout"
+}
