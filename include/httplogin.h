@@ -6,21 +6,20 @@
 #ifndef CORTO_HTTPLOGIN_H
 #define CORTO_HTTPLOGIN_H
 
-#include <corto/corto.h>
-#include <corto/httplogin/_project.h>
-#include <corto/httprouter/c/c.h>
-#include <corto/c/c.h>
-#include <corto/httprouter/httprouter.h>
+#include "bake_config.h"
+
+#define CORTO_HTTPLOGIN_ETC ut_locate("corto.httplogin", NULL, UT_LOCATE_ETC)
 
 /* $header() */
 /* Definitions that are required by package headers (native types) go here. */
 /* $end */
 
-#include <corto/httplogin/_type.h>
-#include <corto/httplogin/_interface.h>
-#include <corto/httplogin/_load.h>
-#include <corto/httplogin/_binding.h>
-#include <corto/httplogin/c/_api.h>
+#include "_type.h"
+#include "_interface.h"
+#include "_load.h"
+#include "_binding.h"
+
+#include <corto.httplogin.c>
 
 /* $body() */
 /* Definitions here that need your package headers go here. */

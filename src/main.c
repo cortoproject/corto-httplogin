@@ -1,6 +1,6 @@
 /* This is a managed file. Do not delete this comment. */
 
-#include <corto/httplogin/httplogin.h>
+#include <corto.httplogin>
 
 int cortomain(int argc, char *argv[]) {
 
