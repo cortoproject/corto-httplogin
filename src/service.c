@@ -1,6 +1,6 @@
 /* This is a managed file. Do not delete this comment. */
 
-#include <corto/httplogin/httplogin.h>
+#include <corto.httplogin>
 
 int16_t httplogin_service_construct(
     httplogin_service this)
@@ -25,24 +25,28 @@ corto_string httplogin_service_login(
     corto_httpserver_HTTP_Request *request,
     httplogin_login *data)
 {
-    const char *username = httpserver_HTTP_Request_getVar(request, "username");
-    const char *password = httpserver_HTTP_Request_getVar(request, "password");
+    const char *session_id = httpserver_HTTP_Request_getVar(request, "key");
 
-    if (!username) {
-        httpserver_HTTP_Request_badRequest(request, "No username provided");
-        return NULL;
-    }
+    if (!session_id || !session_id[0]) {
+        const char *username = httpserver_HTTP_Request_getVar(request, "username");
+        const char *password = httpserver_HTTP_Request_getVar(request, "password");
 
-    const char *session_id = corto_login(username, password);
-    if (!session_id) {
-        httpserver_HTTP_Request_badRequest(request, "Invalid login");
-        return NULL;
+        if (!username) {
+            httpserver_HTTP_Request_badRequest(request, "No username provided");
+            return NULL;
+        }
+
+        session_id = corto_login(username, password);
+        if (!session_id) {
+            httpserver_HTTP_Request_badRequest(request, "Invalid login");
+            return NULL;
+        }
     }
 
     /* Set session-id in cookie on the client */
     httpserver_HTTP_Request_setCookie(request, "session-id", session_id);
 
-    return corto_strdup("Login success");
+    return ut_strdup("Login success");
 }
 
 corto_string httplogin_service_logout(
@@ -61,7 +65,7 @@ corto_string httplogin_service_logout(
 
     corto_logout(session_id);
 
-    return corto_strdup("Logout success");
+    return ut_strdup("Logout success");
 }
 
 typedef struct httplogin_session_ctx {
@@ -76,7 +80,11 @@ uintptr_t httplogin_service_on_pre_request(
     corto_httpserver_HTTP_Request *r)
 {
     const char *session_id = httpserver_HTTP_Request_getVar(
-        r, "session_id");
+        r, "key");
+
+    if (!session_id || !session_id[0]) {
+        session_id = httpserver_HTTP_Request_getVar(r, "session_id");
+    }
 
     bool is_guest = false;
 
@@ -87,9 +95,9 @@ uintptr_t httplogin_service_on_pre_request(
     if ((!session_id || !session_id[0]) && this->enable_guest) {
         session_id = corto_login("guest", "");
         if (!session_id) {
-            corto_error("login-pre-request: failed to login guest account");
+            ut_error("login-pre-request: failed to login guest account");
         } else {
-            corto_ok("login-pre-request: logged in as guest");
+            ut_ok("login-pre-request: logged in as guest");
             is_guest = true;
         }
     }
@@ -99,7 +107,7 @@ uintptr_t httplogin_service_on_pre_request(
         ctx->cur_session = session_id;
         ctx->prev_session = corto_set_session(session_id);
         ctx->is_guest = is_guest;
-        corto_ok("login-pre-request: set session to '%s'", session_id);
+        ut_ok("login-pre-request: set session to '%s'", session_id);
         return (uintptr_t)ctx;
     } else {
         return 0;
@@ -117,11 +125,18 @@ void httplogin_service_on_post_request(
     /* If this was a guest login, logout session */
     if (data) {
         if (data->is_guest) {
-            corto_ok("login-pre-request: logging out guest session");
+            ut_ok("login-post-request: logging out guest session");
             corto_logout(data->cur_session);
         }
 
-        corto_ok("login-pre-request: restore session to '%s'", data->prev_session);
+        if (data->prev_session) {
+            ut_ok(
+                "login-post-request: restore session to '%s'",
+                data->prev_session);
+        } else {
+            ut_ok(
+                "login-post-request: restore session to null");
+        }
         corto_set_session(data->prev_session);
 
         free(data);
